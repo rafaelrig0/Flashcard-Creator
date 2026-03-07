@@ -23,5 +23,5 @@ def get_accuracy_by_folder(db: Session, id_pasta: int):
 
     if total == 0:
         return 0
-    return (acertos / total) * 100
+    return round((acertos / total) * 100, 2)
 
