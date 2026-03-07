@@ -31,23 +31,6 @@ React
 Axios
 React Router
 
-# Estrutura do Projeto
-flashcards/
-│
-├── backend/
-│   ├── app/
-│   │   ├── models
-│   │   ├── routes
-│   │   ├── core
-│   │   └── main.py
-│   │
-│   └── .env
-│
-├── frontend/
-│   ├── src/
-│   │   ├── services
-│   │   ├── pages
-
 # Objetivo do Projeto
 
 Este projeto foi desenvolvido com o objetivo de:
@@ -55,6 +38,3 @@ praticar desenvolvimento fullstack
 aprender FastAPI + React
 trabalhar com APIs REST
 manipular dados relacionais no PostgreSQL
-│   │   └── components
-│
-└── README.md
