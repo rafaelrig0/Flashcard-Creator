@@ -12,3 +12,8 @@ class ReviewResponse(BaseModel):
     id_review: int
     acertou: bool
     id_card: int
+
+class AccuracyResponse(BaseModel):
+    percentage: float
+    total: int
+    correct: int
