@@ -4,8 +4,8 @@ import { getFolders } from "../services/folderService";
 import { getAccuracyByFolder, getAccuracyToday, getAccuracyByWeek } from "../services/reviewService";
 
 import { useNavigate } from "react-router-dom";
-import { Folder, Loader2 } from 'lucide-react'
-import { RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts'
+import { Folder, Loader2, Plus, Trash2 } from 'lucide-react'
+import { RadialBarChart, RadialBar, PolarAngleAxis, Label } from 'recharts'
 import '../index.css'
 
 function Home() {
@@ -113,41 +113,104 @@ function Home() {
 
   return (
 
-    <div className="min-h-screen bg-[#F5F5F5] p-4">
+    <div id="home" className="overflow-hidden min-h-screen items-center bg-[#F5F5F5] p-4">
 
-        {loadingAccuracy 
-            ? <Loader2 className="animate-spin" />  
-            : (
-                <div>
-                    <select onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate}>
-                        <option value="today">Hoje</option>
-                        <option value="week">Semana</option>
-                    </select>
-                    <span>{accuracyGeral ? `${accuracyGeral.percentage}%` : 'No reviews yet'}</span>
-                    <span>{accuracyGeral ? `${accuracyGeral.correct} de ${accuracyGeral.total} acertos` : ''}</span>
-                </div>
-            )
-        }
+        <div className="mb-6 max-w-6xl mx-auto">
+            <div className="rounded-xl shadow-md bg-white py-8 flex flex-col items-center ">
+                {loadingAccuracy 
+                    ? <Loader2 className="animate-spin" />  
+                    : (
+                        <select onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate}
+                            className="p-2 border border-gray-200 rounded-md outline-none focus:border-blue-500 cursor-pointer">
+                            <option value="today">Hoje</option>
+                            <option value="week">Semana</option>
+                        </select>
+                    )
+                }
 
-        <RadialBarChart {...chartConfig} >
-            <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-            <RadialBar dataKey="value" fill={color} background={[{ fill: '#B5B5B5' }]} />
-        </RadialBarChart>
+                <span className="py-3 text-center text-3xl text-[#FFAEB9] font-bold">
+                {accuracyGeral
+                    ? `${accuracyGeral.percentage}% - ${accuracyGeral.correct} de ${accuracyGeral.total} acertos`
+                    : "No reviews yet"}
+                </span>
 
 
-        {loadingFolders ?
-            <Loader2 className="animate-spin" />
-            : (
-                folders.map(folder => (
-                    <div key={folder.id_pasta} onClick={() => navigate(`/folders/${folder.id_pasta}`)}>
-                        <Folder />
-                        <span>{folder.nome}</span>
-                        <span>{accuracy[folder.id_pasta] ? `Accuracy: ${accuracy[folder.id_pasta]}%` : 'No reviews yet'}</span>
+            <RadialBarChart {...chartConfig} className="mx-auto">
+                <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
+                <RadialBar dataKey="value" fill={color} background={[{ fill: '#B5B5B5' }]} />
+
+                    <Label value={accuracyGeral ? `${accuracyGeral.percentage}%` : 'No reviews yet'}
+                    position="center" className="text-xl font-bold" />
+
+            </RadialBarChart>
+            </div>
+        </div>
+
+
+        <div className="mb-6 max-w-6xl mx-auto">
+            <div className="rounded-xl shadow-md bg-white py-8 px-6">
+
+                <div className="flex items-center justify-between pb-5">
+
+                    <h2 className="text-[#EEA2AD] text-2xl font-semibold">
+                        Pastas
+                    </h2>
+
+                    <div className="flex items-center gap-2">
+
+                        <button
+                            id="create-folder"
+                            onClick={() => navigate('/create-folder')}
+                            className="w-10 h-10 flex items-center justify-center text-[#EEA2AD] rounded-full hover:scale-110 hover:bg-gray-100 transition"
+                        >
+                            <Plus size={20} />
+                        </button>
+
+                        <button
+                            id="exclude-folder"
+                            onClick={() => navigate('/exclude-folder')}
+                            className="w-10 h-10 flex items-center justify-center text-[#ff0026] rounded-full hover:scale-110 hover:bg-gray-100 transition"
+                        >
+                            <Trash2 size={20} />
+                        </button>
+
                     </div>
 
-                ))
-            )
-        }
+                </div>
+
+                {loadingFolders ? (
+                <Loader2 className="animate-spin mx-auto" />
+                ) : (
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {folders.map(folder => (
+
+                    <div
+                        key={folder.id_pasta}
+                        onClick={() => navigate(`/folders/${folder.id_pasta}`)}
+                        className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition hover:shadow-md"
+                    >
+                        <Folder size={40} className="text-[#EEA2AD]"/>
+
+                        <span className="text-base">
+                        {folder.nome}
+                        </span>
+
+                        <span className="text-sm font-semibold">
+                        {accuracy[folder.id_pasta]
+                            ? `${accuracy[folder.id_pasta]}% accuracy`
+                            : "No reviews"}
+                        </span>
+
+                    </div>
+
+                    ))}
+                </div>
+
+                )}
+
+            </div>
+        </div>
 
     </div>
 
