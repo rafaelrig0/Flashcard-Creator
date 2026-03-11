@@ -102,10 +102,10 @@ function Home() {
     (accuracyGeral.percentage >= 80 ? '#FF69B4' : (accuracyGeral.percentage >= 55 ? '#FFB6C1' : '#FFE4E1')) : '#FFF0F5';
 
     const chartConfig = {
-    width: 200,
-    height: 200,
-    innerRadius: "60%",
-    outerRadius: "80%",
+    width: 500,
+    height: 300,
+    innerRadius: "80%",
+    outerRadius: "60%",
     data: chartData,
     startAngle: 180,
     endAngle: 0
@@ -113,15 +113,15 @@ function Home() {
 
   return (
 
-    <div id="home" className="overflow-hidden min-h-screen items-center bg-[#F5F5F5] p-4">
+    <div id="home" className="overflow-hidden min-h-screen items-center bg-[#F5F5F5] p-4 scroll-smooth">
 
         <div className="mb-6 max-w-6xl mx-auto">
             <div className="rounded-xl shadow-md bg-white py-8 flex flex-col items-center ">
                 {loadingAccuracy 
-                    ? <Loader2 className="animate-spin" />  
+                    ? <Loader2 className="mx-auto animate-spin text-[#EEA2AD]" size={32} />  
                     : (
                         <select onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate}
-                            className="p-2 border border-gray-200 rounded-md outline-none focus:border-blue-500 cursor-pointer">
+                            className="p-2 border border-gray-200 rounded-md outline-none focus:border-pink-300 cursor-pointer">
                             <option value="today">Hoje</option>
                             <option value="week">Semana</option>
                         </select>
@@ -140,7 +140,7 @@ function Home() {
                 <RadialBar dataKey="value" fill={color} background={[{ fill: '#B5B5B5' }]} />
 
                     <Label value={accuracyGeral ? `${accuracyGeral.percentage}%` : 'No reviews yet'}
-                    position="center" className="text-xl font-bold" />
+                    position="center" className="text-2xl font-bold" />
 
             </RadialBarChart>
             </div>
@@ -161,7 +161,7 @@ function Home() {
                         <button
                             id="create-folder"
                             onClick={() => navigate('/create-folder')}
-                            className="w-10 h-10 flex items-center justify-center text-[#EEA2AD] rounded-full hover:scale-110 hover:bg-gray-100 transition"
+                            className="w-10 h-10 flex items-center justify-center text-[#EEA2AD] rounded-full hover:scale-110 hover:bg-gray-100 transition-all duration-300"
                         >
                             <Plus size={20} />
                         </button>
@@ -169,7 +169,7 @@ function Home() {
                         <button
                             id="exclude-folder"
                             onClick={() => navigate('/exclude-folder')}
-                            className="w-10 h-10 flex items-center justify-center text-[#ff0026] rounded-full hover:scale-110 hover:bg-gray-100 transition"
+                            className="w-10 h-10 flex items-center justify-center text-[#ff0026] rounded-full hover:scale-110 hover:bg-gray-100 transition-all duration-300"
                         >
                             <Trash2 size={20} />
                         </button>
@@ -188,9 +188,9 @@ function Home() {
                     <div
                         key={folder.id_pasta}
                         onClick={() => navigate(`/folders/${folder.id_pasta}`)}
-                        className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-300 transition hover:shadow-md"
+                        className="flex flex-col items-center justify-center p-6 border border-gray-200 rounded-xl cursor-pointer group hover:bg-pink-50 hover:border-pink-300 transition-all duration-200 hover:shadow-md"
                     >
-                        <Folder size={40} className="text-[#EEA2AD]"/>
+                        <Folder size={40} className="text-[#EEA2AD] group-hover:scale-110 transition-transform"/>
 
                         <span className="text-base">
                         {folder.nome}
@@ -198,7 +198,7 @@ function Home() {
 
                         <span className="text-sm font-semibold">
                         {accuracy[folder.id_pasta]
-                            ? `${accuracy[folder.id_pasta]}% accuracy`
+                            ? `${accuracy[folder.id_pasta]}%`
                             : "No reviews"}
                         </span>
 
