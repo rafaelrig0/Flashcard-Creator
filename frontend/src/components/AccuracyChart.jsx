@@ -13,8 +13,8 @@ function AccuracyChart({ accuracyGeral }) {
     const chartConfig = {
     width: 500,
     height: 300,
-    innerRadius: "80%",
-    outerRadius: "60%",
+    innerRadius: "50%",
+    outerRadius: "80%",
     data: chartData,
     startAngle: 180,
     endAngle: 0
@@ -27,8 +27,8 @@ function AccuracyChart({ accuracyGeral }) {
                 <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
                 <RadialBar dataKey="value" fill={color} background={{ fill: '#B5B5B5' }} >
 
-                    <Label value={accuracyGeral ? `${accuracyGeral.percentage}%` : 'No reviews yet'}
-                    position="center" className="text-2xl font-bold" />
+                    <Label value={accuracyGeral ? `${accuracyGeral.percentage}%` : '0%'}
+                    position="center" className="text-4xl text-[#FFE4E1] font-bold " />
 
                 </RadialBar>
 

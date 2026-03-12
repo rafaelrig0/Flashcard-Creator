@@ -102,26 +102,33 @@ function Home() {
 
     <div id="home" className="overflow-hidden min-h-screen items-center bg-[#F5F5F5] p-4 scroll-smooth">
 
-        <div className="mb-6 max-w-6xl mx-auto">
-            <div className="rounded-xl shadow-md bg-white py-8 flex flex-col items-center ">
-                {loadingAccuracy 
-                    ? <Loader2 className="mx-auto animate-spin text-[#EEA2AD]" size={32} />  
-                    : (
-                        <select onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate}
-                            className="p-2 border border-gray-200 rounded-md outline-none focus:border-pink-300 cursor-pointer">
+        <div className=" mb-4 max-w-6xl mx-auto">
+            <div className="rounded-xl shadow-md bg-white flex flex-col items-center ">
+                <div className="pt-5">
+                    <select onChange={(e) => setSelectedDate(e.target.value)} value={selectedDate}
+                        className="p-2 border border-gray-200 rounded-md outline-none focus:border-pink-300 cursor-pointer">
                             <option value="today">Hoje</option>
                             <option value="week">Semana</option>
                         </select>
+                </div>
+
+
+                {loadingAccuracy 
+                    ? <Loader2 className="mx-auto animate-spin text-[#EEA2AD]" size={32} />  
+                    : (
+                        <div className="pt-5">
+                            <span className="py-3 text-center text-3xl text-[#FFAEB9] font-bold">
+                            {accuracyGeral
+                                ? `${accuracyGeral.percentage}% - ${accuracyGeral.correct} de ${accuracyGeral.total} acertos`
+                                : "No reviews yet"}
+                            </span>
+                        </div>
                     )
                 }
 
-                <span className="py-3 text-center text-3xl text-[#FFAEB9] font-bold">
-                {accuracyGeral
-                    ? `${accuracyGeral.percentage}% - ${accuracyGeral.correct} de ${accuracyGeral.total} acertos`
-                    : "No reviews yet"}
-                </span>
-
-                <AccuracyChart accuracyGeral={accuracyGeral} />
+                <div className="overflow-hidden w-full h-64 py-5">
+                    <AccuracyChart accuracyData={accuracyGeral} loading={loadingAccuracy} />
+                </div>
 
             </div>
         </div>
