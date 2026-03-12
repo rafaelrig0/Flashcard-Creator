@@ -8,7 +8,7 @@ from app.services.folder_service import (create_folder as create_folder_service,
                                          get_folder as get_folder_service,
                                          get_folders as get_folders_service)
 
-from app.schemas.folder import FolderCreate, FolderResponse, FolderUpdate
+from app.schemas.folder import FolderCreate, FolderResponse, FolderStatsResponse, FolderUpdate
 from app.core.database import get_db
 
 router = APIRouter()
@@ -19,16 +19,13 @@ def create_folder(folder: FolderCreate, db: Session = Depends(get_db)):
     return create_folder_service(db, folder)
 
 # Busca todas as pastas
-@router.get("/folders/", response_model=List[FolderResponse])
+@router.get("/folders/", response_model=List[FolderStatsResponse])
 def get_folders(db: Session = Depends(get_db)):
     db_folder = get_folders_service(db)
-    if not db_folder:
-        raise HTTPException(status_code=404, detail="Folders not found")
-
     return db_folder
 
 # Busca uma pasta em específico
-@router.get("/folders/{id_pasta}", response_model=FolderResponse)
+@router.get("/folders/{id_pasta}", response_model=FolderStatsResponse)
 def get_folder(id_pasta: int, db: Session = Depends(get_db)):
     db_folder = get_folder_service(db, id_pasta)
     if not db_folder:

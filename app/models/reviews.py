@@ -21,5 +21,6 @@ class Reviews(Base):
     )
     id_card: Mapped[int] = mapped_column(
         ForeignKey("card.id_card"),
-        nullable=False
+        nullable=False,
+        index=True
     )

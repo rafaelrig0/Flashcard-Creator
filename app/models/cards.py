@@ -10,6 +10,7 @@ class Card(Base):
     resposta: Mapped[str] = mapped_column(String(250), nullable=False)
 
     id_pasta: Mapped[int] = mapped_column(
-        ForeignKey("folder.id_pasta"),
-        nullable=False
+        ForeignKey("folder.id_pasta", ondelete="CASCADE"),
+        nullable=False,
+        index=True
     )
