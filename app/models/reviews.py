@@ -24,3 +24,9 @@ class Reviews(Base):
         nullable=False,
         index=True
     )
+
+    id_session: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("studysession.id_session"),
+        nullable=True 
+    )

@@ -3,9 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.database import engine, Base
 
-from app.models import cards, folders, reviews
+from app.models import cards, folders, reviews, studysessions
 
-from app.routers import card_router, folder_router, review_router
+from app.routers import card_router, folder_router, review_router, study_session_router
 
 app = FastAPI()
 
@@ -24,3 +24,4 @@ app.add_middleware(
 app.include_router(card_router.router)
 app.include_router(folder_router.router)
 app.include_router(review_router.router)
+app.include_router(study_session_router.router)

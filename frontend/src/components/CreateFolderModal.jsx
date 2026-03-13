@@ -30,10 +30,11 @@ function CreateFolderModal({ isModalOpen, setIsModalOpen, onFolderCreated }) {
     return (
         <div>
             {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+            <div className="fixed inset-0 flex items-center justify-center">
                 <div className="bg-white rounded-xl p-6 shadow-xl">
                     <h3 className="text-xl font-semibold text-gray-800 pb-4">Nova Pasta</h3>
                     <input 
+                        id="folder_name"
                         value={newFolderName}
                         onChange={(e) => setNewFolderName(e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-pink-300"

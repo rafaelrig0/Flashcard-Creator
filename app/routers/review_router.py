@@ -2,12 +2,13 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.services.review_service import (create_review as create_review_service,
-                                          get_reviews_by_card as get_reviews_by_card_service,
-                                          get_accuracy_by_folder as get_accuracy_by_folder_service,
-                                          get_accuracy_today as get_accuracy_today_service,
-                                          get_accuracy_by_week as get_accuracy_by_week_service
-                                          )
+from app.services.review_service import (
+    create_review as create_review_service,
+    get_reviews_by_card as get_reviews_by_card_service,
+    get_accuracy_by_folder as get_accuracy_by_folder_service,
+    get_accuracy_today as get_accuracy_today_service,
+    get_accuracy_by_week as get_accuracy_by_week_service
+    )
 
 from app.schemas.review import AccuracyResponse, ReviewCreate, ReviewResponse
 from app.core.database import get_db
