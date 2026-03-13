@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getFolders, deleteFolder } from "../services/folderService";
+import { getFolders } from "../services/folderService";
 import { getAccuracyToday, getAccuracyByWeek } from "../services/reviewService";
 
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import '../index.css'
 import FolderCard from "../components/FolderCard.jsx";
 import AccuracyChart from "../components/AccuracyChart.jsx";
 import CreateFolderModal from "../components/CreateFolderModal.jsx";
+import DeleteFolderModal from "../components/DeleteFolderModal.jsx";
 
 function Home() {
     const [folders, setFolders] = useState([]);
@@ -19,6 +20,8 @@ function Home() {
     const [selectedDate, setSelectedDate] = useState('today');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteMode, setDeleteMode] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [folderToDelete, setFolderToDelete] = useState(null);
     const navigate = useNavigate();
     const fetchFolders = async () => {
             try {
@@ -66,32 +69,10 @@ function Home() {
         fetchFolders()
     }, []);
 
-    const handleDeleteFolder = async (folderId, folderName) => {
-
-        const confirmDelete = window.confirm(
-        `Tem certeza que deseja deletar a pasta "${folderName}"?`
-    );
-
-    if (!confirmDelete) return;
-
-        try {
-            await deleteFolder(folderId);
-            setFolders(prev =>
-                prev.filter(folder => folder.id_pasta !== folderId)
-            );
-        } catch (error) {
-            console.error('Error deleting folder:', error);
-            alert('Failed to delete folder. Please try again.');
-        }
-        finally {
-            setDeleteMode(false);
-        }
-
-    };
-
     const handleFolderClick = (folder) => {
         if (deleteMode) {
-            handleDeleteFolder(folder.id_pasta, folder.nome);
+            setFolderToDelete(folder);
+            setDeleteModalOpen(true);
         } else {
             navigate(`/folders/${folder.id_pasta}`);
         }
@@ -150,7 +131,7 @@ function Home() {
                             onClick={() => setIsModalOpen(true)}
                             className="w-10 h-10 flex items-center justify-center text-[#EEA2AD] rounded-full hover:scale-110 hover:bg-gray-100 transition-all duration-300"
                         >
-                            <Plus size={20} />
+                            <Plus size={24} />
                         </button>
 
                         <button
@@ -159,7 +140,7 @@ function Home() {
                             className={`w-10 h-10 flex items-center justify-center text-[#ff0026] rounded-full hover:scale-110 hover:bg-gray-100 transition-all duration-300
                                 ${deleteMode ? "bg-red-100 text-red-500" : "text-[#ff0026] hover:bg-gray-100"}`}
                         >
-                            <Trash2 size={20} />
+                            <Trash2 size={24} />
                         </button>
 
                     </div>
@@ -191,6 +172,17 @@ function Home() {
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             onFolderCreated={fetchFolders}
+        />
+
+        <DeleteFolderModal
+            isOpen={deleteModalOpen}
+            folderId={folderToDelete?.id_pasta}
+            folderName={folderToDelete?.nome}
+            onConfirm={() => {
+                setFolders(prev => prev.filter(f => f.id_pasta !== folderToDelete?.id_pasta));
+                setDeleteModalOpen(false);
+                setDeleteMode(false); }}
+            onCancel={() => setDeleteModalOpen(false)}
         />
 
     </div>

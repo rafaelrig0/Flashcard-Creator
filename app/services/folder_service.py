@@ -23,7 +23,26 @@ def delete_folder(db: Session, id_pasta: int):
     return deleted_folder
 
 def get_folder(db: Session, id_pasta: int):
-    return db.query(Folder).filter(Folder.id_pasta == id_pasta).first()
+    total_reviews = func.count(Reviews.id_review)
+    correct_reviews = func.sum(case((Reviews.acertou == True, 1), else_=0))
+    accuracy = (correct_reviews * 100.0) / func.nullif(total_reviews, 0)
+    folder = (
+        db.query(
+            Folder.id_pasta,
+            Folder.nome,
+            func.count(func.distinct(Card.id_card)).label("cards_count"),
+            correct_reviews.label("correct_answers"),
+            total_reviews.label("total_reviews"),
+            accuracy.label("accuracy")
+    )
+    .outerjoin(Card, Card.id_pasta == Folder.id_pasta)
+    .outerjoin(Reviews, Reviews.id_card == Card.id_card)
+    .filter(Folder.id_pasta == id_pasta)
+    .group_by(Folder.id_pasta)
+    .first()
+    )
+
+    return folder
 
 def get_folders(db: Session, skip: int = 0, limit: int = 100):
 

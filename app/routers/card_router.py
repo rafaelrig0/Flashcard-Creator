@@ -23,9 +23,6 @@ def create_card(card: CardCreate, db : Session = Depends(get_db)):
 @router.get("/cards/", response_model=List[CardResponse])
 def get_cards(db : Session = Depends(get_db)):
     db_cards = get_cards_service(db)
-    if not db_cards:
-        raise HTTPException(status_code=404, detail="No cards found")
-
     return db_cards
 
 # Busca um card específico
@@ -34,15 +31,12 @@ def get_card(id_card: int, db : Session = Depends(get_db)):
     db_card = get_card_service(db, id_card)
     if not db_card:
         raise HTTPException(status_code=404, detail="No card found")
-
     return db_card
 
 # Busca um card específico em uma pasta
 @router.get("/cards/folder/{id_pasta}", response_model=List[CardResponse])
 def get_card_by_folder(id_pasta: int, db : Session = Depends(get_db)):
     db_card = get_card_by_folder_service(db, id_pasta)
-    if not db_card:
-        raise HTTPException(status_code=404, detail="No card found")
 
     return db_card
 

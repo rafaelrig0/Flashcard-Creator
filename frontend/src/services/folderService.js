@@ -14,6 +14,17 @@ export async function getFolders() {
 
 }
 
+export async function getFolder(id_pasta) {
+    try {
+        const response = await api.get(`/folders/${id_pasta}`);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Error fetching folder:', error);
+        throw error;
+    }
+}
+
 export async function createFolder(folderName) {
 
     try {
